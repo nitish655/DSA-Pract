@@ -1,5 +1,3 @@
-
-
 class Node():
     def __init__(self,value):
         self.value = value 
@@ -13,6 +11,9 @@ class DoublyLL():
         self.size = 0
         
     def __len__(self):
+        # curr = self.head
+        # while curr:
+        #     curr = curr.next
         return self.size
         
     
@@ -64,9 +65,14 @@ class DoublyLL():
             current = current.next
         new_node.prev = current
         new_node.next = current.next
-        current.next = new_node           
+        current.next = new_node   
+                
+        if current.next:
+            current.next.prev = new_node
+            current.next = new_node
+            self.size += 1
+            print(f'Inserted {value} at position {index}')    
             
-        
         
     def search(self,element):
         if not self.head:
@@ -117,30 +123,104 @@ class DoublyLL():
         
         
     def delete_from_start(self):
-        pass
+        if not self.head:
+            print('List is empty')
+            return
+        val = self.head.value
+        self.head = self.head.next
+        if self.head:
+            self.head.prev = None
+        self.size -= 1
+        print(f'Deleted {val} from linked list')
+        self.display()
     
     
     def delete_from_end(self):
-        pass
+        if not self.head:
+            print('List is empty')
+            return
+        
+        if not self.head.next:
+            self.head = None
+            self.size -= 1
+            print('Deleted the only element in Linked List')
+            print(f'Length of Linked List is {len(l)}')
+            return
+        
+        current = self.head
+        while current.next.next:
+            current = current.next
+        data = current.next.value
+        current.next = None
+        self.size -= 1
+        print(f'Deleted {data} from end')
+        dll.display()
     
     
-    def delete(self, key):
-        pass
-    
-    
-    def show_menu(self):
-            print('\n -- Doubly Linked List Menu -- ')
-            print('1.  Insert element at start')
-            print('2.  Insert element at end')
-            print('3.  Insert element at specific position')
-            print('4.  Display Linked List') 
-            print('5.  Display Reverse of Linked List')  
-            print('6.  Search in Linked List')
-            print('7.  Delete element from start')
-            print('8.  Delete element from end')
-            print('9.  Delete a specific element')
-            print('10. Exit ')         
+    def deletion_from_value(self, key):
+        if not self.head:
+            print('Linked List is Empty')
+            return
+        current = self.head
+        while current:
+            if current.value == key:
+                if current.prev:
+                    current.prev.next = current.next
+                else:
+                    self.head = current.next
+                if current.next:
+                    current.next.prev = current.prev
+                self.size -= 1
+                print('Deleted Element')
+                print(f'Length of Linked List now is {len(self)}')
+                self.display()
+                return
             
+            current = current.next
+        print('Element not found')
+        
+            
+    def deletion_from_position(self, pos):
+       
+        if not self.head:
+            print('Linked List is Empty')
+            return
+        if pos < 0 or pos >= self.size:
+            print('Invalid Position')
+            return
+        if pos == 0:
+            self.delete_from_start()
+            return
+
+        current = self.head
+        for _ in range(pos):
+            current = current.next
+
+        # Remove current node
+        if current.next:
+            current.next.prev = current.prev
+        if current.prev:
+            current.prev.next = current.next
+
+        self.size -= 1
+        print(f'Deleted element at position {pos}')
+        self.display()
+        
+        
+    def show_menu(self):        
+        print('\n -- Doubly Linked List Menu -- ')
+        print('1.  Insert element at start')
+        print('2.  Insert element at end')
+        print('3.  Insert element at specific position')
+        print('4.  Display Linked List') 
+        print('5.  Display Reverse of Linked List')  
+        print('6.  Search in Linked List')
+        print('7.  Delete element from start')
+        print('8.  Delete element from end')
+        print('9.  Delete a specific element by value')
+        print('10. Delete a specific element by position')
+        print('11. Exit ')         
+                
          
 dll = DoublyLL()
 while True:
@@ -178,9 +258,14 @@ while True:
         dll.delete_from_end()
         
     elif choice == '9':
-        dll.delete()
+        key = int(input('Enter the element to delete: '))
+        dll.deletion_from_value(key)
         
     elif choice == '10':
+        pos = int(input('Enter the position tou want to delete: '))
+        dll.deletion_from_position(pos)
+        
+    elif choice == '11':
         print('Exiting...')
         break
                   
