@@ -144,7 +144,7 @@ class DoublyLL():
             self.head = None
             self.size -= 1
             print('Deleted the only element in Linked List')
-            print(f'Length of Linked List is {len(l)}')
+            print(f'Length of Linked List is {len(self.size)}')
             return
         
         current = self.head
