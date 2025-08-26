@@ -17,3 +17,4 @@ arr = [1, 2, 3, 4, 5]
 target = 7
 result = pair_with_given_sum(arr, target)
 print(result) # Output: True
+print(arr)
